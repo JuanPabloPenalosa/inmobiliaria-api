@@ -6,7 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "Create Product",
+			"name": "Create Inmueble",
 			"request": {
 				"method": "POST",
 				"header": [

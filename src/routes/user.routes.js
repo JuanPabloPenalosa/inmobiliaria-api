@@ -5,7 +5,7 @@ import * as usersCtrl from "../controllers/user.controller";
 import { authJwt, verifySignup } from "../middlewares";
 
 router.post(
-  "/",
+  "/create/",
   [
     authJwt.verifyToken,
     authJwt.isAdmin,

@@ -6,16 +6,22 @@ import config from "../config";
 
 export const signUp = async (req, res) => {
   try {
-    // Getting the Request Body
-    const { username, email, password, roles } = req.body;
-    // Creating a new User Object
+    // Obteniendo el Request Body
+    const username = await req.body.username;
+    const phone = await req.body.phone;
+    const email = await req.body.email;
+    const password =  await req.body.password;
+    const roles = await req.body.roles;
+    
+    // Creando un nuevo User Object
     const newUser = new User({
       username,
+      phone,
       email,
       password: await User.encryptPassword(password),
     });
 
-    // checking for roles
+    // Verificando  roles
     if (req.body.roles) {
       const foundRoles = await Role.find({ name: { $in: roles } });
       newUser.roles = foundRoles.map((role) => role._id);
@@ -24,12 +30,12 @@ export const signUp = async (req, res) => {
       newUser.roles = [role._id];
     }
 
-    // Saving the User Object in Mongodb
+    // Guardando el objeto User en DB Mongodb
     const savedUser = await newUser.save();
 
-    // Create a token
+    // Creando un token para el usuario
     const token = jwt.sign({ id: savedUser._id }, config.SECRET, {
-      expiresIn: 86400, // 24 hours
+      expiresIn: 86400, // 24 horas
     });
 
     return res.status(200).json({ token });
@@ -41,12 +47,12 @@ export const signUp = async (req, res) => {
 
 export const signin = async (req, res) => {
   try {
-    // Request body email can be an email or username
+    // Solicitud de body email, puede ser un email o username
     const userFound = await User.findOne({ email: req.body.email }).populate(
       "roles"
     );
 
-    if (!userFound) return res.status(400).json({ message: "User Not Found" });
+    if (!userFound) return res.status(400).json({ message: "Usuario no encontrado" });
 
     const matchPassword = await User.comparePassword(
       req.body.password,
@@ -56,7 +62,7 @@ export const signin = async (req, res) => {
     if (!matchPassword)
       return res.status(401).json({
         token: null,
-        message: "Invalid Password",
+        message: "Password Inválido",
       });
 
     const token = jwt.sign({ id: userFound._id }, config.SECRET, {

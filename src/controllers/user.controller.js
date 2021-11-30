@@ -7,23 +7,25 @@ export const createUser = async (req, res) => {
 
     const rolesFound = await Role.find({ name: { $in: roles } });
 
-    // creating a new User
+    // Creando un nuevo User
     const user = new User({
       username,
+      phone,
       email,
       password,
       roles: rolesFound.map((role) => role._id),
     });
 
-    // encrypting password
+    // Encriptando el password
     user.password = await User.encryptPassword(user.password);
 
-    // saving the new user
+    // Guardando el nuevo user
     const savedUser = await user.save();
 
     return res.status(200).json({
       _id: savedUser._id,
       username: savedUser.username,
+      phone: savedUser.phone,
       email: savedUser.email,
       roles: savedUser.roles,
     });

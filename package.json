@@ -1,36 +1,40 @@
 {
-  "name": "company-products-api",
-  "version": "1.0.1",
-  "description": "A Company REST API with authentication and authorization",
-  "main": "dist/index.js",
+  "name": "inmobiliaria-api",
+  "version": "1.0",
+  "description": "A Inmobiliaria REST API with authentication and authorization",
+  "main": "/index.js",
   "scripts": {
-    "dev": "nodemon src/index.js --exec babel-node",
+    "babel-node": "babel-node --presets=@babel/preset-env",
+    "dev": "nodemon --exec npm run babel-node src/index.js",
     "build": "babel src --out-dir build",
     "start": "node build/index.js",
     "test": "jest"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/FaztWeb/company-products-api.git"
+    "url": "git+https://github.com/JuanPabloPenalosa/inmobiliaria-api.git"
   },
   "keywords": [],
-  "author": "Fazt",
+  "author": "AJ-Three",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/FaztWeb/company-products-api/issues"
+    "url": "git+https://github.com/JuanPabloPenalosa/inmobiliaria-api.git"
   },
-  "homepage": "https://github.com/FaztWeb/company-products-api#readme",
+  "homepage": "https://github.com/JuanPabloPenalosa/inmobiliaria-api#readme",
   "devDependencies": {
     "@babel/cli": "^7.11.5",
     "@babel/core": "^7.11.5",
     "@babel/node": "^7.10.5",
     "@babel/preset-env": "^7.11.5",
+    "@types/mongoose": "^5.11.97",
     "jest": "^26.4.2",
     "nodemon": "^2.0.4",
     "supertest": "^4.0.2"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.12.1",
     "bcryptjs": "^2.4.3",
+    "core-js": "^3.19.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",

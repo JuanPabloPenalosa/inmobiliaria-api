@@ -5,9 +5,10 @@ import helmet from "helmet";
 
 import pkg from "../package.json";
 
-import productRoutes from "./routes/products.routes";
+import inmuebleRoutes from "./routes/inmuebles.routes";
 import usersRoutes from "./routes/user.routes";
 import authRoutes from "./routes/auth.routes";
+import solicitudesRoutes from "./routes/solicitudes.routes";
 
 import { createRoles, createAdmin} from "./libs/initialSetup";
 
@@ -30,10 +31,10 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Welcome Routes
+// Mensaje de bienvenida API Routes
 app.get("/", (req, res) => {
   res.json({
-    message: "Welcome to my Products API",
+    message: "Welcome to our Inmobiliaria API",
     name: app.get("pkg").name,
     version: app.get("pkg").version,
     description: app.get("pkg").description,
@@ -42,8 +43,9 @@ app.get("/", (req, res) => {
 });
 
 // Routes
-app.use("/api/products", productRoutes);
+app.use("/api/inmuebles", inmuebleRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/solicitudes",solicitudesRoutes);
 
 export default app;

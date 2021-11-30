@@ -6,34 +6,34 @@ import Role from "../models/Role";
 export const verifyToken = async (req, res, next) => {
   let token = req.headers["x-access-token"];
 
-  if (!token) return res.status(403).json({ message: "No token provided" });
+  if (!token) return res.status(403).json({ message: "Ningún token ha sido proveido" });
 
   try {
     const decoded = jwt.verify(token, config.SECRET);
     req.userId = decoded.id;
 
     const user = await User.findById(req.userId, { password: 0 });
-    if (!user) return res.status(404).json({ message: "No user found" });
+    if (!user) return res.status(404).json({ message: "No se encontró el usuario" });
 
     next();
   } catch (error) {
-    return res.status(401).json({ message: "Unauthorized!" });
+    return res.status(401).json({ message: "No tiene autorización!" });
   }
 };
 
-export const isModerator = async (req, res, next) => {
+export const isAdvisor = async (req, res, next) => {
   try {
     const user = await User.findById(req.userId);
     const roles = await Role.find({ _id: { $in: user.roles } });
 
     for (let i = 0; i < roles.length; i++) {
-      if (roles[i].name === "moderator") {
+      if (roles[i].name === "advisor") {
         next();
         return;
       }
     }
 
-    return res.status(403).json({ message: "Require Moderator Role!" });
+    return res.status(403).json({ message: "Requiere rol Advisor!" });
   } catch (error) {
     console.log(error)
     return res.status(500).send({ message: error });
@@ -52,7 +52,7 @@ export const isAdmin = async (req, res, next) => {
       }
     }
 
-    return res.status(403).json({ message: "Require Admin Role!" });
+    return res.status(403).json({ message: "Requiere rol Admin!" });
   } catch (error) {
     console.log(error)
     return res.status(500).send({ message: error });

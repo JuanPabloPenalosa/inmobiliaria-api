@@ -1,9 +1,13 @@
 import { Schema, model } from "mongoose";
 import bcrypt from "bcryptjs";
 
-const productSchema = new Schema(
+const inmuebleSchema = new Schema(
   {
     username: {
+      type: String,
+      unique: true,
+    },
+    phone: {
       type: String,
       unique: true,
     },
@@ -28,13 +32,13 @@ const productSchema = new Schema(
   }
 );
 
-productSchema.statics.encryptPassword = async (password) => {
+inmuebleSchema.statics.encryptPassword = async (password) => {
   const salt = await bcrypt.genSalt(10);
   return await bcrypt.hash(password, salt);
 };
 
-productSchema.statics.comparePassword = async (password, receivedPassword) => {
+inmuebleSchema.statics.comparePassword = async (password, receivedPassword) => {
   return await bcrypt.compare(password, receivedPassword)
 }
 
-export default model("User", productSchema);
+export default model("User", inmuebleSchema);
