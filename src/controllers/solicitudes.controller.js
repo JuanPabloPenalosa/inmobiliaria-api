@@ -5,35 +5,23 @@ import Solicitud from "../models/Solicitud";
 
 export const createSolicitud = async (req, res) => {
   try {
-    const { FechaSolicitud, EstadoSolicitud, inmueble, user, advisor } = req.body;
-    
-    //Buscar Inmueble
-    const inmuebleFound = await Inmueble.find({ name: { $in: inmueble } });
-    //Buscar Cliente
-    const userFound = await User.find({ name: { $in: user } });
-    //Buscar Asesor
-    const asesorFound = await User.find({ name: { $in: advisor } });
+    const EstadoSolicitud = req.body.EstadoSolicitud;
+    const inmueble = req.body.inmueble;
+    const user = req.body.user;
+    const advisor = req.body.advisor;
 
     // Creando una nueva solicitud
     const solicitud = new Solicitud({
-      FechaSolicitud,
       EstadoSolicitud,
-      inmueble: inmuebleFound.map((inmueble) => inmueble._id),
-      user: userFound.map((user) => user._id),
-      advisor: advisorFound.map((user) => user._id),
+      inmueble,
+      user,
+      advisor,
     });
 
     // Guardando el nuevo user
     const savedSolicitud = await solicitud.save();
 
-    return res.status(200).json({
-      _id: savedSolicitud._id,
-      FechaSolicitud: savedSolicitud.FechaSolicitud,
-      EstadoSolicitud: savedSolicitud.EstadoSolicitud,
-      inmueble: savedSolicitud.inmueble,
-      user: savedSolicitud.user,
-      advisor: savedSolicitud.advisor,
-    });
+    return res.status(200).json(savedSolicitud);
   } catch (error) {
     console.error(error);
     console.log(error);
